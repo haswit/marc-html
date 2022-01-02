@@ -1,12 +1,27 @@
-from flask import Flask
+from flask import *
+
+
+
 app = Flask(__name__)
+app.config["TEMPLATE_AUTO_RELOAD"] = True
+app.config["SECRET_KEY"] = "sd4631s6d5f4s"
+
 
 
 @app.route("/")
-def hello():
-    return "<h1 style='color:blue'>Hello There!</h1>"
-
+def index():
+    if not "user" in session:
+        return render_template("index.html", page = "Dashboard")
+    else:
+        return redirect("/sign-in")
+    
+@app.route("/register")
+def register():
+    if not "user" in session:
+        return render_template("register.html", page = "Register")
+    else:
+        return redirect("/sign-in")
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True)
